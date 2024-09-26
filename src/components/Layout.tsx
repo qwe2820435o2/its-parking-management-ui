@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import Link from "next/link";
 
 type LayoutProps = {
     children: ReactNode
@@ -12,10 +13,10 @@ const Layout = ({children}: LayoutProps) => {
                     Parking Management
                 </div>
                 <nav className="mt-6">
-                    <a href="/dashboard" className="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
-                    <a href="/users" className="block py-2 px-4 hover:bg-gray-700">Users</a>
-                    <a href="/orders" className="block py-2 px-4 hover:bg-gray-700">Orders</a>
-                    <a href="/parking-lots" className="block py-2 px-4 hover:bg-gray-700">Parking Lots</a>
+                    <Link href="/dashboard" className="block py-2 px-4 hover:bg-gray-700">Dashboard</Link>
+                    <Link href="/users" className="block py-2 px-4 hover:bg-gray-700">Users</Link>
+                    <Link href="/orders" className="block py-2 px-4 hover:bg-gray-700">Orders</Link>
+                    <Link href="/parking-lots" className="block py-2 px-4 hover:bg-gray-700">Parking Lots</Link>
                 </nav>
             </aside>
             <main className="flex-1 p-6 bg-gray-100">{children}</main>
