@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import UserRow from "@/components/UserRow";
 
 const Users = () => {
 
@@ -8,7 +9,15 @@ const Users = () => {
         { id: 3, name: 'Bob Smith', email: 'bob@example.com', role: 'Viewer' },
     ]);
 
-    const handleDelete = (id: number) => {
+    const [newUser, setNewUser] = useState(
+        {
+            name: '',
+            email: '',
+            role: 'Common'
+        }
+    )
+
+    const onDelete = (id: number) => {
         setUsers(users.filter(user => user.id !== id))
     }
 
@@ -29,17 +38,13 @@ const Users = () => {
 
                 <tbody>
                     {users.map((user) => (
-                        <tr key={user.id} className="border-b">
-                            <td className="py-2 px-4">{user.id}</td>
-                            <td className="py-2 px-4">{user.name}</td>
-                            <td className="py-2 px-4">{user.email}</td>
-                            <td className="py-2 px-4">{user.role}</td>
-                            <td className="py-2 px-4">
-                                <button onClick={()=>handleDelete(user.id)} className="text-red-600 hover:underline">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <UserRow key={user.id}
+                                 id={user.id}
+                                 name={user.name}
+                                 email={user.email}
+                                 role={user.role}
+                                 onDelete={onDelete}
+                        />
                     ))}
                 </tbody>
             </table>
