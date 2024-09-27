@@ -52,7 +52,7 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
                 </select>
             </div>
 
-            <button type="submit" className="bg-primary text-white px-4 py-2">Update User</button>
+            <button type="submit" className="bg-primary text-white px-4 py-2">Update</button>
             <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
                 Cancel
             </button>
