@@ -4,9 +4,10 @@ import UserRow from "@/components/user/UserRow";
 interface UserListProps {
     users: { id: number; name: string; email: string; role: string }[];
     onDeleteUser: (id: number) => void;
+    onUpdateUser: (user: {id: number; name: string; email: string; role: string}) => void;
 }
 
-const UserList = ({users, onDeleteUser}: UserListProps) => {
+const UserList = ({users, onDeleteUser, onUpdateUser}: UserListProps) => {
     return (
         <table className="min-w-full bg-white border border-gray-200">
             <thead className="bg-gray-100">
@@ -27,6 +28,7 @@ const UserList = ({users, onDeleteUser}: UserListProps) => {
                          email={user.email}
                          role={user.role}
                          onDelete={onDeleteUser}
+                         onUpdate={() => onUpdateUser(user)}
                 />
             ))}
             </tbody>

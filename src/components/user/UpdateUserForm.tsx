@@ -51,7 +51,7 @@ const UpdateUserForm = ({user, onUpdateUser}: UpdateUserFormProps) => {
                 </select>
             </div>
 
-            <button type="button" className="bg-primary text-white px-4 py-2">Update User</button>
+            <button type="submit" className="bg-primary text-white px-4 py-2">Update User</button>
         </form>
     );
 };
