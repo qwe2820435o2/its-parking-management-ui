@@ -3,7 +3,6 @@ import UserList from "@/components/user/UserList";
 import AddUserForm from "@/components/user/AddUserForm";
 import Modal from "@/components/Modal";
 import UpdateUserForm from "@/components/user/UpdateUserForm";
-import {Slide, toast, ToastContainer} from "react-toastify";
 import CustomToast from "@/components/CustomToast";
 
 const Users = () => {
