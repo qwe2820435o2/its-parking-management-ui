@@ -3,6 +3,8 @@ import UserList from "@/components/user/UserList";
 import AddUserForm from "@/components/user/AddUserForm";
 import Modal from "@/components/Modal";
 import UpdateUserForm from "@/components/user/UpdateUserForm";
+import {Slide, toast, ToastContainer} from "react-toastify";
+import CustomToast from "@/components/CustomToast";
 
 const Users = () => {
 
@@ -15,26 +17,32 @@ const Users = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [currentUser, setCurrentUser] = useState({id: 0, name: '', email: '', role: ''});
-
+    const [toastMessage, setToastMessage] = useState('');
+    
     const handleAddUser = (newUser: { name: string, email: string, role: string }) => {
         const newId = users.length + 1;
         setUsers([...users, {id: newId, ...newUser}]);
         setShowAddModal(false);
+        setToastMessage('User added successfully!');
     }
 
     const handleDeleteUser = (id: number) => {
         setUsers(users.filter(user => user.id !== id))
+        setToastMessage('User deleted successfully!');
     }
 
     const handleUpdateUser = (updateUser: {id: number, name: string, email: string, role: string}) => {
         setUsers(users.map(user => (user.id === updateUser.id? updateUser: user)));
         setShowUpdateModal(false);
+        setToastMessage('User updated successfully!');
     }
 
     const openUpdateModal = (user: {id: number, name: string, email: string, role: string }) => {
         setCurrentUser(user);
         setShowUpdateModal(true)
     }
+
+    const closeToast = ()=> setToastMessage('');
 
     return (
         <div>
@@ -53,6 +61,8 @@ const Users = () => {
             <Modal show={showUpdateModal} onClose={()=>setShowUpdateModal(false)} title="Update User">
                 <UpdateUserForm user={currentUser} onUpdateUser={handleUpdateUser}/>
             </Modal>
+
+            {toastMessage && <CustomToast message={toastMessage} onClose={closeToast} />}
         </div>
     );
 };
