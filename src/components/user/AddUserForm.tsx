@@ -14,13 +14,38 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
         }
     )
 
+    const [errors, setErrors] = useState({name: '',
+        email: ''})
+
+    const validateForm = () => {
+        let formValid = true;
+        const errors = {name: '', email: ''};
+
+        if (newUser.name.trim() === '') {
+            errors.name = 'Name is required';
+            formValid = false;
+        }
+
+        if (!/\S+@\S+\.\S+/.test(newUser.email)) {
+            errors.email = 'Invalid email address';
+            formValid = false;
+        }
+
+        setErrors(errors);
+        return formValid;
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("123: ",newUser)
-        onAddUser(newUser);
-        setNewUser({name: '',
-            email: '',
-            role: 'Viewer'});
+
+        if (validateForm()){
+            onAddUser(newUser);
+            setNewUser({
+                name: '',
+                email: '',
+                role: 'Viewer'
+            });
+        }
     }
 
     return (
@@ -33,6 +58,7 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
                     value={newUser.name}
                     onChange={(e) => setNewUser({...newUser, name: e.target.value})}
                 />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             </div>
 
             <div className="mb-4">
@@ -43,6 +69,7 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
                     value={newUser.email}
                     onChange={(e) => setNewUser({...newUser, email: e.target.value})}
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             <div className="mb-4">
@@ -50,7 +77,7 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
                 <select
                     className="border px-4 py-2 w-full"
                     value={newUser.role}
-                    onChange={(e) => setNewUser({...newUser,role: e.target.value})}
+                    onChange={(e) => setNewUser({...newUser, role: e.target.value})}
                 >
                     <option value="Viewer">Viewer</option>
                     <option value="Editor">Editor</option>
