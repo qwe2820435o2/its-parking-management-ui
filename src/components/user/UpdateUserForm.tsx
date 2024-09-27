@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 
 interface UpdateUserFormProps {
     user: { id: number, name: string, email: string, role: string };
-    onUpdateUser: (updateUser: { id: number, name: string, email: string, role: string }) => void
+    onUpdateUser: (updateUser: { id: number, name: string, email: string, role: string }) => void;
+    onCancel: () => void;
 }
 
-const UpdateUserForm = ({user, onUpdateUser}: UpdateUserFormProps) => {
+const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => {
 
     const [updateUser, setUpdateUser] = useState(user);
 
@@ -52,6 +53,9 @@ const UpdateUserForm = ({user, onUpdateUser}: UpdateUserFormProps) => {
             </div>
 
             <button type="submit" className="bg-primary text-white px-4 py-2">Update User</button>
+            <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
+                Cancel
+            </button>
         </form>
     );
 };

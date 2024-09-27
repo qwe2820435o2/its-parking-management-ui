@@ -54,11 +54,11 @@ const Users = () => {
             <UserList users={users} onDeleteUser={handleDeleteUser} onUpdateUser={openUpdateModal} />
 
             <Modal show={showAddModal} onClose={()=> setShowAddModal(false)} title="Add User">
-                <AddUserForm onAddUser={handleAddUser}/>
+                <AddUserForm onAddUser={handleAddUser} onCancel={() => setShowAddModal(false)}/>
             </Modal>
 
             <Modal show={showUpdateModal} onClose={()=>setShowUpdateModal(false)} title="Update User">
-                <UpdateUserForm user={currentUser} onUpdateUser={handleUpdateUser}/>
+                <UpdateUserForm user={currentUser} onUpdateUser={handleUpdateUser} onCancel={() => setShowUpdateModal(false)}/>
             </Modal>
 
             {toastMessage && <CustomToast message={toastMessage} onClose={closeToast} />}

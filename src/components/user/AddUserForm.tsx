@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 
 interface AddUserFormProps {
-    onAddUser: (user: { name: string, email: string, role: string }) => void
+    onAddUser: (user: { name: string, email: string, role: string }) => void;
+    onCancel: () => void;
 }
 
-const AddUserForm = ({onAddUser}: AddUserFormProps) => {
+const AddUserForm = ({onAddUser, onCancel}: AddUserFormProps) => {
 
     const [newUser, setNewUser] = useState(
         {
@@ -16,6 +17,7 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
 
     const [errors, setErrors] = useState({name: '',
         email: ''})
+
 
     const validateForm = () => {
         let formValid = true;
@@ -86,6 +88,9 @@ const AddUserForm = ({onAddUser}: AddUserFormProps) => {
             </div>
 
             <button type="submit" className="bg-primary text-white px-4 py-2">Add User</button>
+            <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
+                Cancel
+            </button>
         </form>
     );
 };
