@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import UserRow from "@/components/UserRow";
+import UserList from "@/components/user/UserList";
+import AddUserForm from "@/components/user/AddUserForm";
 
 const Users = () => {
 
@@ -9,15 +10,12 @@ const Users = () => {
         { id: 3, name: 'Bob Smith', email: 'bob@example.com', role: 'Viewer' },
     ]);
 
-    const [newUser, setNewUser] = useState(
-        {
-            name: '',
-            email: '',
-            role: 'Common'
-        }
-    )
+    const handleAddUser = (newUser: {name: string, email: string, role: string}) => {
+        const newId = users.length + 1;
+        setUsers([...users, { id: newId, ...newUser }]);
+    }
 
-    const onDelete = (id: number) => {
+    const handleDeleteUser = (id: number) => {
         setUsers(users.filter(user => user.id !== id))
     }
 
@@ -25,29 +23,10 @@ const Users = () => {
         <div>
             <h1 className="text-2xl font-bold mb-4">User Management</h1>
 
-            <table className="min-w-full bg-white border border-gray-200">
-                <thead className="bg-gray-100">
-                    <tr>
-                        <th className="py-2 px-4 text-left border-b">ID</th>
-                        <th className="py-2 px-4 text-left border-b">Name</th>
-                        <th className="py-2 px-4 text-left border-b">Email</th>
-                        <th className="py-2 px-4 text-left border-b">Role</th>
-                        <th className="py-2 px-4 text-left border-b">Action</th>
-                    </tr>
-                </thead>
+            <AddUserForm onAddUser={handleAddUser} />
 
-                <tbody>
-                    {users.map((user) => (
-                        <UserRow key={user.id}
-                                 id={user.id}
-                                 name={user.name}
-                                 email={user.email}
-                                 role={user.role}
-                                 onDelete={onDelete}
-                        />
-                    ))}
-                </tbody>
-            </table>
+            <UserList users={users} onDeleteUser={handleDeleteUser} />
+
         </div>
     );
 };
