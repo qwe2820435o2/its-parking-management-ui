@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {useForm} from "react-hook-form";
 
 interface UpdateUserFormProps {
     user: { id: number, name: string, email: string, role: string };
@@ -8,24 +9,29 @@ interface UpdateUserFormProps {
 
 const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => {
 
-    const [updateUser, setUpdateUser] = useState(user);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onUpdateUser(updateUser);
-    }
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            name: user.name,
+            email: user.email,
+            role: user.role
+        }
+    });
+
+    const onSubmit = (data: { name: string; email: string; role: string }) => {
+        onUpdateUser({ id: user.id, ...data }); // Update the user with the new form data
+    };
 
     return (
-        <form className="mb-6" onSubmit={handleSubmit}>
+        <form className="mb-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
                 <label className="block text-sm mb-2">Name</label>
                 <input
                     type="text"
                     className="border px-4 py-2 w-full"
-                    value={updateUser.name}
-                    onChange={(e) => setUpdateUser({...updateUser, name: e.target.value})}
-                    required
+                    {...register('name', { required: 'Name is required' })}
                 />
+                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             <div className="mb-4">
@@ -33,23 +39,28 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
                 <input
                     type="email"
                     className="border px-4 py-2 w-full"
-                    value={updateUser.email}
-                    onChange={(e) => setUpdateUser({...updateUser, email: e.target.value})}
-                    required
+                    {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: 'Invalid email address'
+                        }
+                    })}
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
             </div>
 
             <div className="mb-4">
                 <label className="block text-sm mb-2">Role</label>
                 <select
                     className="border px-4 py-2 w-full"
-                    value={updateUser.role}
-                    onChange={(e) => setUpdateUser({...updateUser, role: e.target.value})}
+                    {...register('role', { required: 'Role is required' })}
                 >
                     <option value="Viewer">Viewer</option>
                     <option value="Editor">Editor</option>
                     <option value="Admin">Admin</option>
                 </select>
+                {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
             </div>
 
             <button type="submit" className="bg-primary text-white px-4 py-2">Update</button>
