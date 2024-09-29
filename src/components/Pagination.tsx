@@ -15,7 +15,7 @@ const Pagination = ({usersPerPage, totalUsers, paginate, currentPage}: Paginatio
 
     // Logic to limit the displayed page numbers to `maxPageNumbersToShow`
     let startPage = Math.max(currentPage - Math.floor(maxPageNumbersToShow / 2), 1);
-    let endPage = Math.min(startPage + maxPageNumbersToShow - 1, totalPages);
+    const endPage = Math.min(startPage + maxPageNumbersToShow - 1, totalPages);
 
     // Adjust startPage if we're near the end
     if (endPage - startPage + 1 < maxPageNumbersToShow) {
