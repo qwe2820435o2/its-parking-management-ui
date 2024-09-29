@@ -10,17 +10,16 @@ interface PaginationProps {
 const Pagination = ({usersPerPage, totalUsers, paginate, currentPage}: PaginationProps) => {
 
     const totalPages = Math.ceil(totalUsers / usersPerPage);  // Total number of pages
-    const maxPageNumbersToShow = 5;  // We will show a maximum of 5 pages at a time
+    const maxPageNumbersToShow = 5;  // Max pages to show at a time
     const pageNumbers = [];
 
-    // Pagination display logic for up to 5 pages with "..." for overflow
-    let startPage = Math.max(currentPage - 2, 1);
-    let endPage = Math.min(currentPage + 2, totalPages);
+    // Logic to limit the displayed page numbers to `maxPageNumbersToShow`
+    let startPage = Math.max(currentPage - Math.floor(maxPageNumbersToShow / 2), 1);
+    let endPage = Math.min(startPage + maxPageNumbersToShow - 1, totalPages);
 
-    if (currentPage <= 3) {
-        endPage = Math.min(5, totalPages);
-    } else if (currentPage > totalPages - 3) {
-        startPage = Math.max(totalPages - 4, 1);
+    // Adjust startPage if we're near the end
+    if (endPage - startPage + 1 < maxPageNumbersToShow) {
+        startPage = Math.max(endPage - maxPageNumbersToShow + 1, 1);
     }
 
     for (let i = startPage; i <= endPage; i++) {
@@ -43,7 +42,7 @@ const Pagination = ({usersPerPage, totalUsers, paginate, currentPage}: Paginatio
                     </button>
                 </li>
 
-                {/* If there's more than 5 pages, show "..." before the first page */}
+                {/* If there's more than `maxPageNumbersToShow`, show "..." before the first page */}
                 {startPage > 1 && (
                     <>
                         <li>
@@ -78,7 +77,7 @@ const Pagination = ({usersPerPage, totalUsers, paginate, currentPage}: Paginatio
                     </li>
                 ))}
 
-                {/* If there are more than 5 pages and current page is not near the end, show "..." */}
+                {/* If there are more than `maxPageNumbersToShow`, show "..." after the last page */}
                 {endPage < totalPages && (
                     <>
                         <li>
