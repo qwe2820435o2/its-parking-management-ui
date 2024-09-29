@@ -1,29 +1,33 @@
+import config from "@/utils/config";
+import axiosInstance from "@/utils/axiosInstance";
+
 class UsersService {
 
-    private apiUrl = '/api/users';
+    private apiUrl = `${config.usersEndpoint}`;
 
     async queryUsers(pageIndex: number, pageSize: number) {
-        const response = await fetch(`${this.apiUrl}?pageIndex=${pageIndex}&pageSize=${pageSize}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch users');
-        }
-
-        return response.json();
-    }
-
-    async addUser(user: { name: string, email: string, password: string }) {
-        const response = await fetch(this.apiUrl, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(user),
+        const response = await axiosInstance.get(this.apiUrl,{
+            params: {pageIndex, pageSize}
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to add user');
-        }
-
-        return response.json();
+        return response.data;
     }
 
+    async addUser(user: {name: string, email: string, role: string}){
+        const response = await axiosInstance.post(this.apiUrl, user);
+        return response.data
+    }
+
+    async updateUser(user: {id: number, name: string, email: string, role: string}){
+        const response = await axiosInstance.put(`${this.apiUrl}/${user.id}`, user);
+        return response.data;
+    }
+
+    async deleteUser(id: number){
+        const response = await axiosInstance.delete(`${this.apiUrl}/${id}`);
+        return response.data;
+    }
 
 }
+
+export default new UsersService();

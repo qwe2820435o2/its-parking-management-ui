@@ -1,5 +1,5 @@
 const config = {
-    domain: 'localhost',
+    domain: 'http://localhost:8080',
     apiUrl: '/api',
     usersEndpoint: '/users',
 }

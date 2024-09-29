@@ -1,34 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import UserList from "@/components/user/UserList";
 import AddUserForm from "@/components/user/AddUserForm";
 import Modal from "@/components/Modal";
 import UpdateUserForm from "@/components/user/UpdateUserForm";
 import CustomToast from "@/components/CustomToast";
 import Pagination from "@/components/Pagination";
+import UsersService from "@/services/usersService";
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+}
 
 const Users = () => {
 
-    const [users, setUsers] = useState([
-        {id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin'},
-        {id: 2, name: 'Jane Doe', email: 'jane@example.com', role: 'Editor'},
-        {id: 3, name: 'Bob Smith1', email: 'bob@example.com', role: 'Viewer'},
-        {id: 4, name: 'Bob Smith2', email: 'bob@example.com', role: 'Viewer'},
-        {id: 5, name: 'Bob Smith3', email: 'bob@example.com', role: 'Viewer'},
-        {id: 6, name: 'Bob Smith4', email: 'bob@example.com', role: 'Viewer'},
-        {id: 7, name: 'Bob Smith5', email: 'bob@example.com', role: 'Viewer'},
-        {id: 8, name: 'Bob Smith6', email: 'bob@example.com', role: 'Viewer'},
-        {id: 9, name: 'Bob Smith7', email: 'bob@example.com', role: 'Viewer'},
-        {id: 10, name: 'Bob Smith8', email: 'bob@example.com', role: 'Viewer'},
-        {id: 11, name: 'Bob Smith9', email: 'bob@example.com', role: 'Viewer'},
-        {id: 12, name: 'Bob Smith10-', email: 'bob@example.com', role: 'Viewer'},
-    ]);
+    const [users, setUsers] = useState<User[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const usersPerPage = 5;
-
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+    const [totalCount, setTotalCount] = useState(0);
+    const usersPerPage = 10;
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
@@ -36,6 +28,21 @@ const Users = () => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [currentUser, setCurrentUser] = useState({id: 0, name: '', email: '', role: ''});
     const [toastMessage, setToastMessage] = useState('');
+
+
+    useEffect(() => {
+        const queryUsers = async ()=>{
+            try {
+                const data = await UsersService.queryUsers(currentPage, usersPerPage);
+                setUsers(data.users);
+                setTotalCount(data.totalCount)
+            } catch (error){
+                console.error('Failed to fetch users:', error);
+            }
+        };
+
+        queryUsers();
+    }, [currentPage]);
 
     const handleAddUser = (newUser: { name: string, email: string, role: string }) => {
         const newId = users.length + 1;
@@ -70,11 +77,11 @@ const Users = () => {
                     className="bg-primary text-white px-4 py-2 mb-6">Add User
             </button>
 
-            <UserList users={currentUsers} onDeleteUser={handleDeleteUser} onUpdateUser={openUpdateModal} />
+            <UserList users={users} onDeleteUser={handleDeleteUser} onUpdateUser={openUpdateModal} />
 
             <Pagination
                 usersPerPage={usersPerPage}
-                totalUsers={users.length}  // Total number of users in the mock data
+                totalUsers={totalCount}
                 paginate={paginate}
                 currentPage={currentPage}
             />
