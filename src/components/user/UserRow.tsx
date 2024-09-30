@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import DeleteModal from "@/components/DeleteModal";
 import {Button} from "@/components/ui/button";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 
 interface UserRowProps {
     id: number,
@@ -27,15 +27,30 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
             <td className="py-2 px-4">{email}</td>
             <td className="py-2 px-4">{role}</td>
             <td className="py-2 px-4">
-                <Button onClick={onUpdate} className="text-blue-500 hover:underline mr-4">
+                <Button variant="ghost" onClick={onUpdate} className="mr-4">
                     Edit
                 </Button>
-                <Button onClick={() => setShowDeleteModal(true)} className="text-red-600 hover:underline">
+                <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
                     Delete
                 </Button>
             </td>
 
-            <DeleteModal show={showDeleteModal} onConfirm={handleDelete} onCancel={() => setShowDeleteModal(false)}/>
+            <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Delete</DialogTitle>
+                    </DialogHeader>
+                    <p>Are you sure you want to delete this user?</p>
+                    <DialogFooter>
+                        <Button variant="destructive" onClick={handleDelete}>
+                            Yes
+                        </Button>
+                        <Button variant="ghost" onClick={() => setShowDeleteModal(false)}>
+                            Cancel
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </tr>
     );
 };
