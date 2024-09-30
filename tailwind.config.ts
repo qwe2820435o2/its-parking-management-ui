@@ -11,18 +11,18 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
-  			primary: '#2563EB',
-  			secondary: '#F3F4F6',
-  			accent: '#10B981',
-  			warning: '#F59E0B',
-  			danger: '#EF4444',
-  			textPrimary: '#1F2937',
-  			textSecondary: '#9CA3AF',
-  			darkBg: '#111827',
-  			darkContentBg: '#1F2937',
-  			lightText: '#F9FAFB',
-  			background: 'var(--background)',
-  			foreground: 'var(--foreground)'
+			primary: '#000000',    // 黑色，作为主色
+			secondary: '#F5F5F5',  // 非常浅的灰白色，作为背景色
+			accent: '#808080',     // 灰色，用于强调文字或装饰
+			warning: '#E5E7EB',    // 浅灰色，适用于警告
+			danger: '#4B5563',     // 深灰色，用于危险警告
+			textPrimary: '#1F2937', // 深灰色，主要文本颜色
+			textSecondary: '#6B7280', // 浅灰色，次要文本颜色
+			darkBg: '#111827',     // 深色背景，适合暗模式
+			darkContentBg: '#1F2937', // 暗色内容背景
+			lightText: '#FFFFFF',  // 白色文本，适合深色背景
+			background: 'var(--background)',
+			foreground: 'var(--foreground)'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
