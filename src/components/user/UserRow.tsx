@@ -40,7 +40,7 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
                     <DialogHeader>
                         <DialogTitle>Confirm Delete</DialogTitle>
                     </DialogHeader>
-                    <p>Are you sure you want to delete this user?</p>
+                    <p>Are you sure to delete this user?</p>
                     <DialogFooter>
                         <Button variant="destructive" onClick={handleDelete}>
                             Yes
