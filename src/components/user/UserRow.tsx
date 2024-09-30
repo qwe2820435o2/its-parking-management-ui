@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
+import {TableCell, TableRow} from "@/components/ui/table";
 
 interface UserRowProps {
     id: number,
@@ -21,19 +22,19 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
     }
 
     return (
-        <tr key={id} className="border-b">
-            <td className="py-2 px-4">{id}</td>
-            <td className="py-2 px-4">{name}</td>
-            <td className="py-2 px-4">{email}</td>
-            <td className="py-2 px-4">{role}</td>
-            <td className="py-2 px-4">
-                <Button variant="ghost" onClick={onUpdate} className="mr-4">
+        <TableRow>
+            <TableCell>{id}</TableCell>
+            <TableCell>{name}</TableCell>
+            <TableCell>{email}</TableCell>
+            <TableCell>{role}</TableCell>
+            <TableCell>
+                <Button variant="outline" onClick={onUpdate} className="mr-4">
                     Edit
                 </Button>
                 <Button variant="destructive" onClick={() => setShowDeleteModal(true)}>
                     Delete
                 </Button>
-            </td>
+            </TableCell>
 
             <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
                 <DialogContent>
@@ -51,7 +52,7 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        </tr>
+        </TableRow>
     );
 };
 
