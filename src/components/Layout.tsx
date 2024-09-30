@@ -15,9 +15,9 @@ const Layout = ({children}: LayoutProps) => {
                     Parking Management
                 </div>
                 <nav className="mt-6 flex flex-col space-y-2">
-                    <Link href="/dashboard" className="block px-4">
+                    <Link href="/upload" className="block px-4">
                         <Button variant="ghost" className="w-full justify-start">
-                            Dashboard
+                            upload
                         </Button>
                     </Link>
                     <Link href="/users" className="block px-4">

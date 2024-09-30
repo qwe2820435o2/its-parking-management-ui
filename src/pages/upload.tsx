@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Dashboard = () => {
+const Upload = () => {
     return (
         <div>
             <h1 className="text-2xl font-bold">Dashboard</h1>
-            <p>This is the dashboard page.</p>
+            <p>This is the upload page.</p>
         </div>
     );
 };
 
-export default Dashboard;
+export default Upload;
