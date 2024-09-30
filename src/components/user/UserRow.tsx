@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import DeleteModal from "@/components/DeleteModal";
+import {Button} from "@/components/ui/button";
 
 interface UserRowProps {
     id: number,
@@ -26,12 +27,12 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
             <td className="py-2 px-4">{email}</td>
             <td className="py-2 px-4">{role}</td>
             <td className="py-2 px-4">
-                <button onClick={onUpdate} className="text-blue-500 hover:underline mr-4">
+                <Button onClick={onUpdate} className="text-blue-500 hover:underline mr-4">
                     Edit
-                </button>
-                <button onClick={() => setShowDeleteModal(true)} className="text-red-600 hover:underline">
+                </Button>
+                <Button onClick={() => setShowDeleteModal(true)} className="text-red-600 hover:underline">
                     Delete
-                </button>
+                </Button>
             </td>
 
             <DeleteModal show={showDeleteModal} onConfirm={handleDelete} onCancel={() => setShowDeleteModal(false)}/>

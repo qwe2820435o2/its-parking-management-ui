@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import {Button} from "@/components/ui/button";
 
 interface ModalProps {
     show: boolean;

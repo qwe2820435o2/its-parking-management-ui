@@ -64,6 +64,8 @@ const AddUserForm = ({onAddUser, onCancel}: AddUserFormProps) => {
                 <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
                     Cancel
                 </button>
+
+
             </div>
         </form>
 );

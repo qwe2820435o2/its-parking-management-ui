@@ -6,6 +6,8 @@ import UpdateUserForm from "@/components/user/UpdateUserForm";
 import CustomToast from "@/components/CustomToast";
 import Pagination from "@/components/Pagination";
 import UsersService from "@/services/usersService";
+import { Button } from '@/components/ui/button';
+
 
 interface User {
     id: number;
