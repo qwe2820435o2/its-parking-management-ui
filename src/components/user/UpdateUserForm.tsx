@@ -1,5 +1,7 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 
 interface UpdateUserFormProps {
     user: { id: number, name: string, email: string, role: string };
@@ -26,9 +28,8 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
         <form className="mb-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
                 <label className="block text-sm mb-2">Name</label>
-                <input
+                <Input
                     type="text"
-                    className="border px-4 py-2 w-full"
                     {...register('name', { required: 'Name is required' })}
                 />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
@@ -36,9 +37,8 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
 
             <div className="mb-4">
                 <label className="block text-sm mb-2">Email</label>
-                <input
+                <Input
                     type="email"
-                    className="border px-4 py-2 w-full"
                     {...register('email', {
                         required: 'Email is required',
                         pattern: {
@@ -63,10 +63,10 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
                 {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
             </div>
 
-            <button type="submit" className="bg-primary text-white px-4 py-2">Update</button>
-            <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
+            <Button variant="default" className="bg-primary text-white px-4 py-2">Update</Button>
+            <Button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
                 Cancel
-            </button>
+            </Button>
         </form>
     );
 };

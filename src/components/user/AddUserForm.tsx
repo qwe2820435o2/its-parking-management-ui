@@ -1,5 +1,7 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 
 interface AddUserFormProps {
     onAddUser: (user: { name: string, email: string, role: string }) => void;
@@ -24,19 +26,14 @@ const AddUserForm = ({onAddUser, onCancel}: AddUserFormProps) => {
         <form className="mb-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
                 <label className="block text-sm mb-2">Name</label>
-                <input
-                    type="text"
-                    className="border px-4 py-2 w-full"
-                    {...register('name', {required: 'Name is required'})}
-                />
+                <Input type="text" {...register('name', {required: 'Name is required'})} />
                 {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             <div className="mb-4">
                 <label className="block text-sm mb-2">Email</label>
-                <input
+                <Input
                     type="email"
-                    className="border px-4 py-2 w-full"
                     {...register('email', {
                         required: 'Email is required', pattern: {
                             value: /^\S+@\S+$/i,
@@ -60,10 +57,10 @@ const AddUserForm = ({onAddUser, onCancel}: AddUserFormProps) => {
             </div>
 
             <div className="mt-4">
-                <button type="submit" className="bg-primary text-white px-4 py-2">Add</button>
-                <button type="button" className="bg-gray-500 text-white px-4 py-2" onClick={onCancel}>
+                <Button variant="default" className="bg-primary text-white px-4 py-2">Add</Button>
+                <Button type="button" variant="ghost" onClick={onCancel}>
                     Cancel
-                </button>
+                </Button>
 
 
             </div>

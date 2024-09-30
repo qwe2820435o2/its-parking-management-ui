@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import UserList from "@/components/user/UserList";
 import AddUserForm from "@/components/user/AddUserForm";
-import Modal from "@/components/Modal";
 import UpdateUserForm from "@/components/user/UpdateUserForm";
 import CustomToast from "@/components/CustomToast";
 import Pagination from "@/components/Pagination";
 import UsersService from "@/services/usersService";
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 
 interface User {
@@ -75,9 +75,9 @@ const Users = () => {
         <div>
             <h1 className="text-2xl font-bold mb-4">User Management</h1>
 
-            <button type="submit" onClick={() => setShowAddModal(true)}
-                    className="bg-primary text-white px-4 py-2 mb-6">Add User
-            </button>
+            <Button variant="default" onClick={() => setShowAddModal(true)} className="mb-6">
+                Add User
+            </Button>
 
             <UserList users={users} onDeleteUser={handleDeleteUser} onUpdateUser={openUpdateModal} />
 
@@ -88,13 +88,23 @@ const Users = () => {
                 currentPage={currentPage}
             />
 
-            <Modal show={showAddModal} onClose={()=> setShowAddModal(false)} title="Add User">
-                <AddUserForm onAddUser={handleAddUser} onCancel={() => setShowAddModal(false)}/>
-            </Modal>
+            <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add User</DialogTitle>
+                    </DialogHeader>
+                    <AddUserForm onAddUser={handleAddUser} onCancel={() => setShowAddModal(false)} />
+                </DialogContent>
+            </Dialog>
 
-            <Modal show={showUpdateModal} onClose={()=>setShowUpdateModal(false)} title="Update User">
-                <UpdateUserForm user={currentUser} onUpdateUser={handleUpdateUser} onCancel={() => setShowUpdateModal(false)}/>
-            </Modal>
+            <Dialog open={showUpdateModal} onOpenChange={setShowUpdateModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Update User</DialogTitle>
+                    </DialogHeader>
+                    <UpdateUserForm user={currentUser} onUpdateUser={handleUpdateUser} onCancel={() => setShowUpdateModal(false)} />
+                </DialogContent>
+            </Dialog>
 
             {toastMessage && <CustomToast message={toastMessage} onClose={closeToast} />}
         </div>
