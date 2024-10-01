@@ -7,7 +7,6 @@ const Camara = () => {
 
     const [entranceImage, setEntranceImage] = useState<File | null>(null);
     const [exitImage, setExitImage] = useState<File | null>(null);
-    const [parkingSpotImage, setParkingSpotImage] = useState<File | null>(null);
 
     const handleFileChange = (
         event: React.ChangeEvent<HTMLInputElement>,
