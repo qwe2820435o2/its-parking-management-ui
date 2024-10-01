@@ -54,7 +54,7 @@ const Camara = () => {
                 {entranceImage && (
                     <div className="mt-4">
                         <img src={URL.createObjectURL(entranceImage)} alt="Entrance"
-                             className="w-56 h-36 rounded-md"/>
+                             className="w-56 h-auto rounded-md"/>
                     </div>
                 )}
                 <Button variant="default" onClick={() => handleSubmit(entranceImage, 'Entrance')}>
@@ -72,29 +72,11 @@ const Camara = () => {
                 {exitImage && (
                     <div className="mt-4">
                         <img src={URL.createObjectURL(exitImage)} alt="Exit"
-                             className="w-56 h-36 rounded-md"/>
+                             className="w-56 h-auto rounded-md"/>
                     </div>
                 )}
 
                 <Button variant="default" onClick={() => handleSubmit(exitImage, 'Exit')}>
-                    Upload
-                </Button>
-            </div>
-
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Parking Spot Camera</h2>
-                <Input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, setParkingSpotImage)}
-                    className="block w-full border p-2 mb-2"
-                />
-                {parkingSpotImage && (
-                    <div className="mt-4">
-                        <img src={URL.createObjectURL(parkingSpotImage)} alt="parkingSpot"
-                             className="w-56 h-36 rounded-md"/>
-                    </div>
-                )}
-                <Button variant="default" onClick={() => handleSubmit(parkingSpotImage, 'Parking Spot')}>
                     Upload
                 </Button>
             </div>
