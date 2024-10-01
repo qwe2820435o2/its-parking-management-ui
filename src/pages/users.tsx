@@ -72,7 +72,7 @@ const Users = () => {
     const closeToast = ()=> setToastMessage('');
 
     return (
-        <div>
+        <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
             <h1 className="text-2xl font-bold mb-4">User Management</h1>
 
             <Button variant="default" onClick={() => setShowAddModal(true)} className="mb-6">

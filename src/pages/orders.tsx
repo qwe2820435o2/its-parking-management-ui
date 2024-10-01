@@ -63,7 +63,7 @@ const Orders = () => {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+        <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
             <h1 className="text-2xl font-bold mb-4">Order Management</h1>
 
             <Table>
@@ -72,7 +72,7 @@ const Orders = () => {
                         <TableHead>License Plate</TableHead>
                         <TableHead>Entry Time</TableHead>
                         <TableHead>Total Price</TableHead>
-                        <TableHead className="px-4">Actions</TableHead>
+                        <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -83,7 +83,7 @@ const Orders = () => {
                             <TableCell>{order.entryTime}</TableCell>
                             <TableCell>{order.price.toFixed(2)}</TableCell>
                             <TableCell>
-                                <Button variant="ghost" onClick={() => handleEditClick(order)}
+                                <Button variant="outline" onClick={() => handleEditClick(order)}
                                         className="mr-4">Edit</Button>
                                 <Button variant="destructive" onClick={() => handleDeleteClick(order)}>Delete</Button>
 
