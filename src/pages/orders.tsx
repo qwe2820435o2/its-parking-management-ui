@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
+import OrderList from "@/components/order/OrderList";
 
 interface Order {
     plateNumber: string;
@@ -66,32 +66,11 @@ const Orders = () => {
         <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
             <h1 className="text-2xl font-bold mb-4">Order Management</h1>
 
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>License Plate</TableHead>
-                        <TableHead>Entry Time</TableHead>
-                        <TableHead>Total Price</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                    {orders.map((order, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{order.plateNumber}</TableCell>
-                            <TableCell>{order.entryTime}</TableCell>
-                            <TableCell>{order.price.toFixed(2)}</TableCell>
-                            <TableCell>
-                                <Button variant="outline" onClick={() => handleEditClick(order)}
-                                        className="mr-4">Edit</Button>
-                                <Button variant="destructive" onClick={() => handleDeleteClick(order)}>Delete</Button>
-
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <OrderList
+                orders={orders}
+                onUpdateOrder={handleEditClick}
+                onDeleteOrder={handleDeleteClick}
+            />
 
             <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
                 <DialogContent>
@@ -123,6 +102,7 @@ const Orders = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
         </div>
     );
 };
