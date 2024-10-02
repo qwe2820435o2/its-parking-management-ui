@@ -1,7 +1,7 @@
 
 import React from 'react';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
+import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import OrderRow from "@/components/order/OrderRow";
 
 interface OrderListProps {
     orders: { plateNumber: string; entryTime: string; price: number }[];
@@ -23,17 +23,14 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onUpdateOrder, onDeleteOr
 
             <TableBody>
                 {orders.map((order, index) => (
-                    <TableRow key={index}>
-                        <TableCell>{order.plateNumber}</TableCell>
-                        <TableCell>{order.entryTime}</TableCell>
-                        <TableCell>{order.price.toFixed(2)}</TableCell>
-                        <TableCell>
-                            <Button variant="outline" onClick={() => onUpdateOrder(order)}
-                                    className="mr-4">Edit</Button>
-                            <Button variant="destructive" onClick={() => onDeleteOrder(order)}>Delete</Button>
-
-                        </TableCell>
-                    </TableRow>
+                    <OrderRow
+                        key={index}
+                        plateNumber={order.plateNumber}
+                        entryTime={order.entryTime}
+                        price={order.price}
+                        onUpdate={() => onUpdateOrder(order)}
+                        onDelete={() => onDeleteOrder(order)}
+                    />
                 ))}
             </TableBody>
         </Table>
