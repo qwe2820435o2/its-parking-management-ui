@@ -2,7 +2,6 @@
 import React, {useState} from 'react';
 import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import OrderRow from "@/components/order/OrderRow";
-import DeleteOrderDialog from "@/components/order/DeleteOrderDialog";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
@@ -77,11 +76,18 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
                 ))}
             </TableBody>
 
-            <DeleteOrderDialog
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={confirmDelete}
-            />
+            <Dialog open={isDeleteModalOpen} onOpenChange={() => setIsDeleteModalOpen(false)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Deletion</DialogTitle>
+                    </DialogHeader>
+                    <p>Delete this order?</p>
+                    <DialogFooter>
+                        <Button variant="destructive" onClick={confirmDelete}>Yes</Button>
+                        <Button variant="ghost" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
                 <DialogContent>
