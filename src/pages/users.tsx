@@ -6,7 +6,7 @@ import CustomToast from "@/components/CustomToast";
 import Pagination from "@/components/Pagination";
 import UsersService from "@/services/usersService";
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 
 interface User {

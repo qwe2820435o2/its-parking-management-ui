@@ -1,15 +1,58 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import OrderRow from "@/components/order/OrderRow";
+import DeleteOrderDialog from "@/components/order/DeleteOrderDialog";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+
+interface Order {
+    plateNumber: string;
+    entryTime: string;
+    price: number;
+}
 
 interface OrderListProps {
     orders: { plateNumber: string; entryTime: string; price: number }[];
-    onUpdateOrder: (order: { plateNumber: string; entryTime: string; price: number }) => void;
-    onDeleteOrder: (order: { plateNumber: string; entryTime: string; price: number }) => void;
+    setOrders: (orders: Order[]) => void;
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders, onUpdateOrder, onDeleteOrder }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
+
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [newPrice, setNewPrice] = useState('')
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const confirmDelete = () => {
+        setOrders(orders.filter(order => order !== selectedOrder));
+        setIsDeleteModalOpen(false);
+    }
+
+    const handleDeleteClick = (order: Order) => {
+        setSelectedOrder(order);
+        setIsDeleteModalOpen(true);
+    }
+
+    const handleEditClick = (order: Order) => {
+        setSelectedOrder(order);
+        setNewPrice(order.price.toFixed(2));
+        setIsEditModalOpen(true);
+    }
+
+    const saveEdit = () => {
+        const updatedOrders = orders.map(order =>
+            order.plateNumber === selectedOrder?.plateNumber
+                ? { ...order, price: parseFloat(newPrice) }
+                : order
+        );
+
+        setOrders(updatedOrders);
+        setIsEditModalOpen(false);
+    }
+
     return (
         <Table>
             <TableHeader>
@@ -28,11 +71,35 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onUpdateOrder, onDeleteOr
                         plateNumber={order.plateNumber}
                         entryTime={order.entryTime}
                         price={order.price}
-                        onUpdate={() => onUpdateOrder(order)}
-                        onDelete={() => onDeleteOrder(order)}
+                        onUpdate={() => handleEditClick(order)}
+                        onDelete={() => handleDeleteClick(order)}
                     />
                 ))}
             </TableBody>
+
+            <DeleteOrderDialog
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+            />
+
+            <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit Order</DialogTitle>
+                    </DialogHeader>
+                    <Input
+                        type="number"
+                        value={newPrice}
+                        onChange={(e) => setNewPrice(e.target.value)}
+                        placeholder="New Price"
+                    />
+                    <DialogFooter>
+                        <Button variant="destructive" onClick={saveEdit}>Save</Button>
+                        <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Table>
     );
 };

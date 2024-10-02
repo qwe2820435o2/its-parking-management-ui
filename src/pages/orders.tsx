@@ -31,37 +31,7 @@ const Orders = () => {
         },
     ]);
 
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [newPrice, setNewPrice] = useState('')
 
-    const handleDeleteClick = (order: Order) => {
-        setSelectedOrder(order);
-        setIsDeleteModalOpen(true);
-    }
-
-    const confirmDelete = () => {
-        setOrders(orders.filter(order => order !== selectedOrder));
-        setIsDeleteModalOpen(false);
-    }
-
-    const handleEditClick = (order: Order) => {
-        setSelectedOrder(order);
-        setNewPrice(order.price.toFixed(2));
-        setIsEditModalOpen(true);
-    }
-
-    const saveEdit = () => {
-        const updatedOrders = orders.map(order =>
-            order.plateNumber === selectedOrder?.plateNumber
-                ? { ...order, price: parseFloat(newPrice) }
-                : order
-        );
-
-        setOrders(updatedOrders);
-        setIsEditModalOpen(false);
-    }
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -69,33 +39,8 @@ const Orders = () => {
 
             <OrderList
                 orders={orders}
-                onUpdateOrder={handleEditClick}
-                onDeleteOrder={handleDeleteClick}
+                setOrders={setOrders}
             />
-
-            <DeleteOrderDialog
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={confirmDelete}
-            />
-
-            <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Edit Order</DialogTitle>
-                    </DialogHeader>
-                    <Input
-                        type="number"
-                        value={newPrice}
-                        onChange={(e) => setNewPrice(e.target.value)}
-                        placeholder="New Price"
-                    />
-                    <DialogFooter>
-                        <Button variant="destructive" onClick={saveEdit}>Save</Button>
-                        <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
 
         </div>
     );
