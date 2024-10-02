@@ -50,11 +50,12 @@ const ParkingLots = () => {
                 <p className="ml-6">Busy Spots: {busySpots}</p>
             </div>
 
-            <div className="grid grid-cols-10 gap-4 mb-6">
+            <div className="flex flex-wrap gap-4 mb-6">
                 {parkingSpots.map(spot => (
                     <div key={spot.id} className={`w-24 h-24 flex items-center justify-center rounded-md
                     ${spot.status === 'free' ? 'bg-green-500' : 'bg-red-500'}`}>
-                        <span>#{spot.id}</span>
+                        <span role="img" aria-label="car">🚗</span>
+                        <span className="ml-2">#{spot.id}</span>
                     </div>
                 ))}
             </div>
