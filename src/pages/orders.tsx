@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 import OrderList from "@/components/order/OrderList";
+import DeleteOrderDialog from "@/components/order/DeleteOrderDialog";
 
 interface Order {
     plateNumber: string;
@@ -72,18 +73,11 @@ const Orders = () => {
                 onDeleteOrder={handleDeleteClick}
             />
 
-            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Confirm Deletion</DialogTitle>
-                    </DialogHeader>
-                    <p>Delete this order?</p>
-                    <DialogFooter>
-                        <Button variant="destructive" onClick={confirmDelete}>Yes</Button>
-                        <Button variant="ghost" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DeleteOrderDialog
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+            />
 
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
                 <DialogContent>
