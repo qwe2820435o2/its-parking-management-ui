@@ -1,33 +1,42 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import OrderList from "@/components/order/OrderList";
+import OrdersService from "@/services/ordersService";
+import Pagination from "@/components/Pagination";
 
 interface Order {
+    id: number;
     plateNumber: string;
-    entryTime: string;
+    camera_id: string;
+    plateImage: string;
+    status: number;
+    startTime: string;
+    endTime: string;
     price: number;
 }
 
 const Orders = () => {
 
-    const [orders, setOrders] = useState<Order[]>([
-        {
-            plateNumber: 'ABC123',
-            entryTime: '2023-09-29T08:30:00',
-            price: 12.50,
-        },
-        {
-            plateNumber: 'XYZ987',
-            entryTime: '2023-09-29T09:15:00',
-            price: 15.00,
-        },
-        {
-            plateNumber: 'LMN456',
-            entryTime: '2023-09-29T10:45:00',
-            price: 20.75,
-        },
-    ]);
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalCount, setTotalCount] = useState(0);
+    const ordersPerPage = 10;
 
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+    // 查询订单数据
+    const queryOrders = async () => {
+        try {
+            const data = await OrdersService.queryOrders(currentPage, ordersPerPage);
+            setOrders(data);  // 假设返回的结构中包含 orders 数组
+            setTotalCount(data.totalCount);  // 返回的总订单数
+        } catch (error) {
+            console.error('Failed to fetch orders:', error);
+        }
+    };
+
+    useEffect(() => {
+        queryOrders();  // 在 currentPage 变化时查询订单数据
+    }, [currentPage]);
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -35,9 +44,14 @@ const Orders = () => {
 
             <OrderList
                 orders={orders}
-                setOrders={setOrders}
             />
 
+            <Pagination
+                itemsPerPage={ordersPerPage}
+                totalItems={totalCount}
+                paginate={paginate}
+                currentPage={currentPage}
+            />
         </div>
     );
 };

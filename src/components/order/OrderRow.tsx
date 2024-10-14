@@ -3,18 +3,28 @@ import {TableCell, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 
 interface OrderRowProps {
+    id: number;
     plateNumber: string;
-    entryTime: string;
+    camera_id: string;
+    plateImage: string;
+    status: number;
+    startTime: string;
+    endTime: string;
     price: number;
     onDelete: () => void;
     onUpdate: () => void;
 }
 
-const OrderRow: React.FC<OrderRowProps> = ({ plateNumber, entryTime, price, onDelete, onUpdate }) => {
+const OrderRow: React.FC<OrderRowProps> = ({ id, plateNumber, camera_id, plateImage, status, startTime, endTime, price, onDelete, onUpdate }) => {
     return (
         <TableRow>
+            <TableCell>{id}</TableCell>
             <TableCell>{plateNumber}</TableCell>
-            <TableCell>{entryTime}</TableCell>
+            <TableCell>{camera_id}</TableCell>
+            <TableCell>{plateImage}</TableCell>
+            <TableCell>{status === 1 ? 'Active' : 'Inactive'}</TableCell>
+            <TableCell>{startTime}</TableCell>
+            <TableCell>{endTime}</TableCell>
             <TableCell>{price.toFixed(2)}</TableCell>
             <TableCell>
                 <Button variant="outline" onClick={() => onUpdate()}

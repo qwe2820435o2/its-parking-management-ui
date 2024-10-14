@@ -120,8 +120,8 @@ const Users = () => {
             <UserList users={users} onDeleteUser={handleDeleteUser} onUpdateUser={openUpdateModal}/>
 
             <Pagination
-                usersPerPage={usersPerPage}
-                totalUsers={totalCount}
+                itemsPerPage={usersPerPage}
+                totalItems={totalCount}
                 paginate={paginate}
                 currentPage={currentPage}
             />

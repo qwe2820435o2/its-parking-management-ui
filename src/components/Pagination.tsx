@@ -1,15 +1,15 @@
 import React from 'react';
 
 interface PaginationProps {
-    usersPerPage: number;
-    totalUsers: number;
+    itemsPerPage: number;
+    totalItems: number;
     paginate: (pageNumber: number) => void;
     currentPage: number;
 }
 
-const Pagination = ({usersPerPage, totalUsers, paginate, currentPage}: PaginationProps) => {
+const Pagination = ({itemsPerPage, totalItems, paginate, currentPage}: PaginationProps) => {
 
-    const totalPages = Math.ceil(totalUsers / usersPerPage);  // Total number of pages
+    const totalPages = Math.ceil(totalItems / itemsPerPage);  // Total number of pages
     const maxPageNumbersToShow = 5;  // Max pages to show at a time
     const pageNumbers = [];
 

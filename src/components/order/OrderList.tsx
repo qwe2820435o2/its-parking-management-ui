@@ -8,17 +8,21 @@ import {Button} from "@/components/ui/button";
 import CustomToast from "@/components/CustomToast";
 
 interface Order {
+    id: number;
     plateNumber: string;
-    entryTime: string;
+    camera_id: string;
+    plateImage: string;
+    status: number;
+    startTime: string;
+    endTime: string;
     price: number;
 }
 
 interface OrderListProps {
-    orders: { plateNumber: string; entryTime: string; price: number }[];
-    setOrders: (orders: Order[]) => void;
+    orders: Order[];
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
+const OrderList: React.FC<OrderListProps> = ({ orders}) => {
 
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -30,7 +34,6 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
     const [toastMessage, setToastMessage] = useState('');
 
     const confirmDelete = () => {
-        setOrders(orders.filter(order => order !== selectedOrder));
         setIsDeleteModalOpen(false);
         setToastMessage('User deleted successfully!');
     }
@@ -47,13 +50,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
     }
 
     const saveEdit = () => {
-        const updatedOrders = orders.map(order =>
-            order.plateNumber === selectedOrder?.plateNumber
-                ? { ...order, price: parseFloat(newPrice) }
-                : order
-        );
 
-        setOrders(updatedOrders);
         setIsEditModalOpen(false);
         setToastMessage('User Edit successfully!');
     }
@@ -64,19 +61,29 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
         <Table>
             <TableHeader>
                 <TableRow>
+                    <TableHead>ID</TableHead>
                     <TableHead>License Plate</TableHead>
-                    <TableHead>Entry Time</TableHead>
+                    <TableHead>Camera ID</TableHead>
+                    <TableHead>Plate Image</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Start Time</TableHead>
+                    <TableHead>End Time</TableHead>
                     <TableHead>Total Price</TableHead>
                     <TableHead>Actions</TableHead>
                 </TableRow>
             </TableHeader>
 
             <TableBody>
-                {orders.map((order, index) => (
+                {orders.map((order) => (
                     <OrderRow
-                        key={index}
+                        key={order.id}
+                        id={order.id}
                         plateNumber={order.plateNumber}
-                        entryTime={order.entryTime}
+                        camera_id={order.camera_id}
+                        plateImage={order.plateImage}
+                        status={order.status}
+                        startTime={order.startTime}
+                        endTime={order.endTime}
                         price={order.price}
                         onUpdate={() => handleEditClick(order)}
                         onDelete={() => handleDeleteClick(order)}
