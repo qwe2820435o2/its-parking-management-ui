@@ -3,6 +3,8 @@ import OrderList from "@/components/order/OrderList";
 import OrdersService from "@/services/ordersService";
 import Pagination from "@/components/Pagination";
 import CustomToast from "@/components/CustomToast";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
+import UpdateOrderForm from "@/components/order/UpdateOrderForm";
 
 interface Order {
     id: number;
@@ -21,6 +23,8 @@ const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const ordersPerPage = 10;
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
     const [toastMessage, setToastMessage] = useState('');
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -46,6 +50,23 @@ const Orders = () => {
         }
     };
 
+    // 更新订单
+    const handleUpdateOrder = async (updatedOrder: Order) => {
+        try {
+            await OrdersService.updateOrder(updatedOrder);
+            setToastMessage('Order updated successfully!');
+            queryOrders();  // 更新后重新查询订单
+        } catch (error) {
+            console.error('Failed to update order:', error);
+        }
+        setShowUpdateModal(false);
+    };
+
+    const openUpdateModal = (order: Order) => {
+        setCurrentOrder(order);
+        setShowUpdateModal(true);
+    };
+
     const closeToast = () => setToastMessage('');
 
     useEffect(() => {
@@ -58,6 +79,7 @@ const Orders = () => {
 
             <OrderList
                 orders={orders}
+                onUpdateOrder={openUpdateModal}
                 onDeleteOrder={handleDeleteOrder}
             />
 
@@ -67,6 +89,21 @@ const Orders = () => {
                 paginate={paginate}
                 currentPage={currentPage}
             />
+
+            <Dialog open={showUpdateModal} onOpenChange={setShowUpdateModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Update Order</DialogTitle>
+                    </DialogHeader>
+                    {currentOrder && (
+                        <UpdateOrderForm
+                            order={currentOrder}
+                            onUpdateOrder={handleUpdateOrder}
+                            onCancel={() => setShowUpdateModal(false)}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
 
             {toastMessage && <CustomToast message={toastMessage} onClose={closeToast}/>}
         </div>

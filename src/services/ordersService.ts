@@ -16,6 +16,20 @@ class OrdersService {
         const response = await axiosInstance.delete(`${this.apiUrl}/${id}`);
         return response.data;
     }
+
+    async updateOrder(order: {
+        id: number,
+        plateNumber: string,
+        camera_id: string,
+        plateImage: string,
+        status: number,
+        startTime: string,
+        endTime: string,
+        price: number
+    }) {
+        const response = await axiosInstance.put(`${this.apiUrl}/${order.id}`, order);
+        return response.data;
+    }
 }
 
 export default new OrdersService();

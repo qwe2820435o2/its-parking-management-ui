@@ -20,15 +20,15 @@ interface Order {
 
 interface OrderListProps {
     orders: Order[];
+    onUpdateOrder: (order: Order) => void;
     onDeleteOrder: (id: number) => void;  // 删除订单的回调函数
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders,onDeleteOrder }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders,onUpdateOrder, onDeleteOrder }) => {
 
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [newPrice, setNewPrice] = useState('')
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -39,14 +39,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders,onDeleteOrder }) => {
         setToastMessage('User deleted successfully!');
     }
 
-    const handleEditClick = (order: Order) => {
-        setSelectedOrder(order);
-        setNewPrice(order.price.toFixed(2));
-        setIsEditModalOpen(true);
-    }
-
     const saveEdit = () => {
-
         setIsEditModalOpen(false);
         setToastMessage('User Edit successfully!');
     }
@@ -81,7 +74,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders,onDeleteOrder }) => {
                         startTime={order.startTime}
                         endTime={order.endTime}
                         price={order.price}
-                        onUpdate={() => handleEditClick(order)}
+                        onUpdate={() => onUpdateOrder(order)}
                         onDelete={() => onDeleteOrder(order.id)}
                     />
                 ))}
