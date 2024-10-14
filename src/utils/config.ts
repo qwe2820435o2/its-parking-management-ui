@@ -1,7 +1,7 @@
 const config = {
-    domain: 'http://localhost:8080',
+    domain: 'http://localhost:5240',
     apiUrl: '/api',
-    usersEndpoint: '/users',
+    usersEndpoint: '/system-user',
 }
 
 export default config;

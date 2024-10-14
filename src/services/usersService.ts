@@ -13,7 +13,7 @@ class UsersService {
         return response.data;
     }
 
-    async addUser(user: {name: string, email: string, role: string}){
+    async addUser(user: {username: string, password: string, email: string, phoneNumber: string, isActive: boolean, role: string}){
         const response = await axiosInstance.post(this.apiUrl, user);
         return response.data
     }

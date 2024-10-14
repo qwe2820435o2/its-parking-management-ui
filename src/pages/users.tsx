@@ -31,26 +31,31 @@ const Users = () => {
     const [currentUser, setCurrentUser] = useState({id: 0, name: '', email: '', role: ''});
     const [toastMessage, setToastMessage] = useState('');
 
+    const queryUsers = async ()=>{
+        try {
+            const data = await UsersService.queryUsers(currentPage, usersPerPage);
+            setUsers(data);
+            setTotalCount(data.totalCount)
+        } catch (error){
+            console.error('Failed to fetch users:', error);
+        }
+    };
 
     useEffect(() => {
-        const queryUsers = async ()=>{
-            try {
-                const data = await UsersService.queryUsers(currentPage, usersPerPage);
-                setUsers(data.users);
-                setTotalCount(data.totalCount)
-            } catch (error){
-                console.error('Failed to fetch users:', error);
-            }
-        };
-
         queryUsers();
     }, [currentPage]);
 
-    const handleAddUser = (newUser: { name: string, email: string, role: string }) => {
-        const newId = users.length + 1;
-        setUsers([...users, {id: newId, ...newUser}]);
+    const handleAddUser = (newUser: { username: string, password: string, email: string, phoneNumber: string, isActive: boolean, role: string }) => {
+        UsersService.addUser(newUser)
+            .then(()=>{
+                setToastMessage('User added successfully!');
+                queryUsers();
+            })
+            .catch(error => {
+                console.error('Failed to add user:', error);
+            });
+
         setShowAddModal(false);
-        setToastMessage('User added successfully!');
     }
 
     const handleDeleteUser = (id: number) => {
