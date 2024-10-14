@@ -4,15 +4,18 @@ import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/
 import {TableCell, TableRow} from "@/components/ui/table";
 
 interface UserRowProps {
-    id: number,
-    name: string,
-    email: string,
-    role: string,
+    id: number;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    createAt: string;
+    isActive: boolean;
+    role: string;
     onDelete: (id: number) => void,
     onUpdate: () => void;
 }
 
-const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
+const UserRow = ({id, username, email, phoneNumber, createAt, isActive, role, onDelete, onUpdate}: UserRowProps) => {
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -24,8 +27,11 @@ const UserRow = ({id, name, email, role, onDelete, onUpdate}: UserRowProps) => {
     return (
         <TableRow>
             <TableCell>{id}</TableCell>
-            <TableCell>{name}</TableCell>
+            <TableCell>{username}</TableCell>
             <TableCell>{email}</TableCell>
+            <TableCell>{phoneNumber}</TableCell>
+            <TableCell>{createAt}</TableCell>
+            <TableCell>{isActive ? 'Active' : 'Inactive'}</TableCell>
             <TableCell>{role}</TableCell>
             <TableCell>
                 <Button variant="outline" onClick={onUpdate} className="mr-4">

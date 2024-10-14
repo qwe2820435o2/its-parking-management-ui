@@ -15,6 +15,7 @@ interface User {
     email: string;
     phoneNumber: string;
     passwordHash: string;
+    createAt: string;
     isActive: boolean;
     role: string;
 }
