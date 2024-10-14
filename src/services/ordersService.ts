@@ -12,6 +12,10 @@ class OrdersService {
         return response.data;
     }
 
+    async deleteOrder(id: number) {
+        const response = await axiosInstance.delete(`${this.apiUrl}/${id}`);
+        return response.data;
+    }
 }
 
 export default new OrdersService();

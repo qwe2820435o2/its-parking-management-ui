@@ -20,9 +20,10 @@ interface Order {
 
 interface OrderListProps {
     orders: Order[];
+    onDeleteOrder: (id: number) => void;  // 删除订单的回调函数
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders}) => {
+const OrderList: React.FC<OrderListProps> = ({ orders,onDeleteOrder }) => {
 
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -36,11 +37,6 @@ const OrderList: React.FC<OrderListProps> = ({ orders}) => {
     const confirmDelete = () => {
         setIsDeleteModalOpen(false);
         setToastMessage('User deleted successfully!');
-    }
-
-    const handleDeleteClick = (order: Order) => {
-        setSelectedOrder(order);
-        setIsDeleteModalOpen(true);
     }
 
     const handleEditClick = (order: Order) => {
@@ -86,7 +82,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders}) => {
                         endTime={order.endTime}
                         price={order.price}
                         onUpdate={() => handleEditClick(order)}
-                        onDelete={() => handleDeleteClick(order)}
+                        onDelete={() => onDeleteOrder(order.id)}
                     />
                 ))}
             </TableBody>

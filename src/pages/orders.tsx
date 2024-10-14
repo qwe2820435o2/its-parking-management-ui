@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import OrderList from "@/components/order/OrderList";
 import OrdersService from "@/services/ordersService";
 import Pagination from "@/components/Pagination";
+import CustomToast from "@/components/CustomToast";
 
 interface Order {
     id: number;
@@ -20,6 +21,7 @@ const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const ordersPerPage = 10;
+    const [toastMessage, setToastMessage] = useState('');
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -34,6 +36,18 @@ const Orders = () => {
         }
     };
 
+    const handleDeleteOrder = async (id: number) => {
+        try {
+            await OrdersService.deleteOrder(id);
+            setToastMessage('Order deleted successfully!');
+            queryOrders();  // 删除后重新查询订单
+        } catch (error) {
+            console.error('Failed to delete order:', error);
+        }
+    };
+
+    const closeToast = () => setToastMessage('');
+
     useEffect(() => {
         queryOrders();  // 在 currentPage 变化时查询订单数据
     }, [currentPage]);
@@ -44,6 +58,7 @@ const Orders = () => {
 
             <OrderList
                 orders={orders}
+                onDeleteOrder={handleDeleteOrder}
             />
 
             <Pagination
@@ -52,6 +67,8 @@ const Orders = () => {
                 paginate={paginate}
                 currentPage={currentPage}
             />
+
+            {toastMessage && <CustomToast message={toastMessage} onClose={closeToast}/>}
         </div>
     );
 };
