@@ -5,6 +5,7 @@ import OrderRow from "@/components/order/OrderRow";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import CustomToast from "@/components/CustomToast";
 
 interface Order {
     plateNumber: string;
@@ -23,11 +24,15 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [newPrice, setNewPrice] = useState('')
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const [toastMessage, setToastMessage] = useState('');
 
     const confirmDelete = () => {
         setOrders(orders.filter(order => order !== selectedOrder));
         setIsDeleteModalOpen(false);
+        setToastMessage('User deleted successfully!');
     }
 
     const handleDeleteClick = (order: Order) => {
@@ -50,7 +55,10 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
 
         setOrders(updatedOrders);
         setIsEditModalOpen(false);
+        setToastMessage('User Edit successfully!');
     }
+
+    const closeToast = ()=> setToastMessage('');
 
     return (
         <Table>
@@ -106,6 +114,8 @@ const OrderList: React.FC<OrderListProps> = ({ orders , setOrders}) => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            {toastMessage && <CustomToast message={toastMessage} onClose={closeToast} />}
         </Table>
     );
 };

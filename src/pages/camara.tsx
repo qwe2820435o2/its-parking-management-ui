@@ -23,11 +23,11 @@ const Camara = () => {
         }
 
         const formData = new FormData();
-        formData.append('image', image);  // 将图片添加到表单数据中
-        formData.append('cameraType', cameraType);  // 可以添加其他参数，如摄像头类型
+        formData.append('file', image);  // 将图片添加到表单数据中
+        formData.append('cameraId', cameraType);  // 可以添加其他参数，如摄像头类型
 
         try {
-            const response = await axios.post('/api/upload-image', formData, {
+            const response = await axios.post('http://localhost:5240/api/file-upload/upload-image', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -56,7 +56,7 @@ const Camara = () => {
                              className="w-56 h-auto rounded-md"/>
                     </div>
                 )}
-                <Button variant="default" onClick={() => handleSubmit(entranceImage, 'Entrance')}>
+                <Button variant="default" onClick={() => handleSubmit(entranceImage, '1')}>
                     Upload
                 </Button>
             </div>
@@ -75,7 +75,7 @@ const Camara = () => {
                     </div>
                 )}
 
-                <Button variant="default" onClick={() => handleSubmit(exitImage, 'Exit')}>
+                <Button variant="default" onClick={() => handleSubmit(exitImage, '2')}>
                     Upload
                 </Button>
             </div>
