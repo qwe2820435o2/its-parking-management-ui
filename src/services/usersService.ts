@@ -18,7 +18,7 @@ class UsersService {
         return response.data
     }
 
-    async updateUser(user: {id: number, name: string, email: string, role: string}){
+    async updateUser(user: {id: number, username: string, email: string, phoneNumber: string, passwordHash: string, isActive: boolean, role: string}){
         const response = await axiosInstance.put(`${this.apiUrl}/${user.id}`, user);
         return response.data;
     }

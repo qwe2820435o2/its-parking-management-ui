@@ -4,8 +4,8 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 
 interface UpdateUserFormProps {
-    user: { id: number, name: string, email: string, role: string };
-    onUpdateUser: (updateUser: { id: number, name: string, email: string, role: string }) => void;
+    user: { id: number, username: string, email: string, phoneNumber: string, passwordHash: string, isActive: boolean, role: string };
+    onUpdateUser: (updateUser: { id: number, username: string, email: string, phoneNumber: string, passwordHash: string, isActive: boolean, role: string }) => void;
     onCancel: () => void;
 }
 
@@ -14,25 +14,25 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            name: user.name,
+            username: user.username,
             email: user.email,
-            role: user.role
+            phoneNumber: user.phoneNumber,
+            passwordHash: user.passwordHash,
+            isActive: user.isActive,
+            role: user.role,
         }
     });
 
-    const onSubmit = (data: { name: string; email: string; role: string }) => {
+    const onSubmit = (data: { username: string, email: string, phoneNumber: string, passwordHash: string, isActive: boolean, role: string }) => {
         onUpdateUser({ id: user.id, ...data }); // Update the user with the new form data
     };
 
     return (
         <form className="mb-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
-                <label className="block text-sm mb-2">Name</label>
-                <Input
-                    type="text"
-                    {...register('name', { required: 'Name is required' })}
-                />
-                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                <label className="block text-sm mb-2">Username</label>
+                <Input type="text" {...register('username', {required: 'Username is required'})} />
+                {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
             </div>
 
             <div className="mb-4">
@@ -51,10 +51,27 @@ const UpdateUserForm = ({user, onUpdateUser, onCancel}: UpdateUserFormProps) => 
             </div>
 
             <div className="mb-4">
+                <label className="block text-sm mb-2">Phone Number</label>
+                <Input type="text" {...register('phoneNumber', {required: 'Phone number is required'})} />
+                {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>}
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-sm mb-2">Password</label>
+                <Input type="text" {...register('passwordHash', {required: 'Password hash is required'})} />
+                {errors.passwordHash && <p className="text-red-500 text-sm">{errors.passwordHash.message}</p>}
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-sm mb-2">Is Active</label>
+                <input type="checkbox" {...register('isActive')} />
+            </div>
+
+            <div className="mb-4">
                 <label className="block text-sm mb-2">Role</label>
                 <select
                     className="border px-4 py-2 w-full"
-                    {...register('role', { required: 'Role is required' })}
+                    {...register('role', {required: 'Role is required'})}
                 >
                     <option value="Viewer">Viewer</option>
                     <option value="Editor">Editor</option>
