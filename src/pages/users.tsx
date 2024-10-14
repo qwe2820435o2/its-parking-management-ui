@@ -11,8 +11,11 @@ import {Dialog, DialogContent, DialogHeader, DialogTitle} from '@/components/ui/
 
 interface User {
     id: number;
-    name: string;
+    username: string;
     email: string;
+    phoneNumber: string;
+    passwordHash: string;
+    isActive: boolean;
     role: string;
 }
 
@@ -66,8 +69,14 @@ const Users = () => {
     }
 
     const handleDeleteUser = (id: number) => {
-        setUsers(users.filter(user => user.id !== id))
-        setToastMessage('User deleted successfully!');
+        UsersService.deleteUser(id)
+            .then(()=>{
+                setToastMessage('User deleted successfully!');
+                queryUsers();
+             })
+            .catch(error=>{
+                console.error('Failed to delete user:', error);
+            });
     }
 
     const handleUpdateUser = (updateUser: {
