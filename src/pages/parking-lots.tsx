@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
+import {Box, OrbitControls, Plane} from "@react-three/drei";
+import {Canvas} from "@react-three/fiber";
 
 const ParkingLots = () => {
 
@@ -23,50 +23,82 @@ const ParkingLots = () => {
     ];
 
     const [parkingSpots, setParkingSpots] = useState(initialParkingSpots);
-    const [selectedSpotId, setSelectedSpotId] = useState(Number);
+    const [selectedSpotId, setSelectedSpotId] = useState<number | null>(null);
 
     const markBusy = (id: number) => {
         setParkingSpots(prevSpots =>
-            prevSpots.map(spot =>
-                spot.id === id ? {...spot, status: 'busy'} : spot))
-    }
+            prevSpots.map(spot => (spot.id === id ? { ...spot, status: 'busy' } : spot))
+        );
+    };
 
     const markFree = (id: number) => {
         setParkingSpots(prevSpots =>
-            prevSpots.map(spot =>
-                spot.id === id ? {...spot, status: 'free'} : spot));
-    }
+            prevSpots.map(spot => (spot.id === id ? { ...spot, status: 'free' } : spot))
+        );
+    };
 
-    const freeSpots = parkingSpots.filter(spot => spot.status === 'free').length;
-    const busySpots = parkingSpots.filter(spot => spot.status === 'busy').length;
-
+    const ParkingSpot = ({ position, status }: { position: [number, number, number]; status: string }) => (
+        <Box
+            args={[2, 1, 4]} // 停车位的尺寸
+            position={position} // 每个停车位的位置
+            castShadow
+            receiveShadow
+            material-color={status === 'free' ? 'green' : 'red'} // 颜色显示停车位状态
+        >
+            <meshStandardMaterial color={status === 'free' ? 'green' : 'red'} />
+        </Box>
+    );
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
-            <h1 className="text-2xl font-bold mb-4">Parking Lot Management</h1>
+            <h1 className="text-2xl font-bold mb-4">Parking Lot Management (3D Model)</h1>
 
-            <div className="flex justify-items-start items-center mb-4">
-                <p>Free Spots: {freeSpots}</p>
-                <p className="ml-6">Busy Spots: {busySpots}</p>
-            </div>
+            {/* 3D 停车场渲染区域 */}
+            <Canvas style={{height: '500px', width: '100%'}} shadows camera={{position: [10, 10, 10], fov: 50}}>
+                {/* 灯光设置 */}
+                <ambientLight intensity={0.4}/>
+                <directionalLight position={[5, 10, 5]} intensity={0.8} castShadow/>
+                <spotLight position={[15, 20, 5]} angle={0.3} penumbra={1} intensity={1} castShadow/>
 
-            <div className="flex flex-wrap gap-4 mb-6">
-                {parkingSpots.map(spot => (
-                    <div key={spot.id} className={`w-24 h-24 flex items-center justify-center rounded-md
-                    ${spot.status === 'free' ? 'bg-green-500' : 'bg-red-500'}`}>
-                        <span role="img" aria-label="car">🚗</span>
-                        <span className="ml-2">#{spot.id}</span>
-                    </div>
+                {/* 地面 */}
+                <Plane args={[20, 20]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+                    <meshStandardMaterial color="gray"/>
+                </Plane>
+
+                {/* 渲染停车位 */}
+                {parkingSpots.map((spot, index) => (
+                    <ParkingSpot
+                        key={spot.id}
+                        position={[index * 3 - 5, 0, 0]} // 停车位排列
+                        status={spot.status}
+                    />
                 ))}
-            </div>
 
-            <div className="flex space-x-4">
-                <Input className="max-w-24"  type="number" value={selectedSpotId} placeholder="Enter Spot ID"
-                       onChange={(e) => setSelectedSpotId(Number(e.target.value))}/>
-                <Button variant="destructive" onClick={() => markBusy(selectedSpotId)}>Mark Busy</Button>
-                <Button variant="default" onClick={() => markFree(selectedSpotId)}>Mark Free</Button>
-            </div>
+                {/* 摄像机控制器 */}
+                <OrbitControls/>
+            </Canvas>
 
+            <div className="flex space-x-4 mt-4">
+                <input
+                    className="border p-2"
+                    type="number"
+                    value={selectedSpotId || ''}
+                    placeholder="Enter Spot ID"
+                    onChange={(e) => setSelectedSpotId(Number(e.target.value))}
+                />
+                <button
+                    className="px-4 py-2 bg-red-500 text-white rounded"
+                    onClick={() => selectedSpotId && markBusy(selectedSpotId)}
+                >
+                    Mark Busy
+                </button>
+                <button
+                    className="px-4 py-2 bg-green-500 text-white rounded"
+                    onClick={() => selectedSpotId && markFree(selectedSpotId)}
+                >
+                    Mark Free
+                </button>
+            </div>
         </div>
     );
 };
