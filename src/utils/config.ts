@@ -3,6 +3,7 @@ const config = {
     apiUrl: '/api',
     usersEndpoint: '/system-user',
     ordersEndpoint: '/customer-order',
+    camarasEndpoint: '/file-upload/upload-image',
 }
 
 export default config;

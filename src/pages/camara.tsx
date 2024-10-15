@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import axios from "axios";
+import CamerasService from "@/services/camerasService";
 
 const Camara = () => {
 
@@ -27,13 +28,9 @@ const Camara = () => {
         formData.append('cameraId', cameraType);  // 可以添加其他参数，如摄像头类型
 
         try {
-            const response = await axios.post('http://localhost:5240/api/file-upload/upload-image', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const response = await CamerasService.uploadImage(image, cameraType);  // 使用服务层方法上传图片
 
-            if (response.status === 200) {
+            if (response) {
                 alert(`${cameraType} camera image uploaded successfully!`);
             }
         } catch (error) {
