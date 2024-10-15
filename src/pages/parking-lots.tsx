@@ -26,50 +26,57 @@ const ParkingLots = () => {
     const [selectedSpotId, setSelectedSpotId] = useState<number | null>(null);
 
     const markBusy = (id: number) => {
-        setParkingSpots(prevSpots =>
-            prevSpots.map(spot => (spot.id === id ? { ...spot, status: 'busy' } : spot))
+        setParkingSpots((prevSpots) =>
+            prevSpots.map((spot) => (spot.id === id ? { ...spot, status: 'busy' } : spot))
         );
     };
 
     const markFree = (id: number) => {
-        setParkingSpots(prevSpots =>
-            prevSpots.map(spot => (spot.id === id ? { ...spot, status: 'free' } : spot))
+        setParkingSpots((prevSpots) =>
+            prevSpots.map((spot) => (spot.id === id ? { ...spot, status: 'free' } : spot))
         );
     };
 
+    // 停车位组件
     const ParkingSpot = ({ position, status }: { position: [number, number, number]; status: string }) => (
         <Box
-            args={[2, 1, 4]} // 停车位的尺寸
+            args={[2, 1, 4]} // 停车位的大小
             position={position} // 每个停车位的位置
             castShadow
             receiveShadow
-            material-color={status === 'free' ? 'green' : 'red'} // 颜色显示停车位状态
         >
-            <meshStandardMaterial color={status === 'free' ? 'green' : 'red'} />
+            <meshStandardMaterial
+                color={status === 'free' ? '#7CFC00' : '#FF4500'} // 使用亮绿色和红色表示停车状态
+                metalness={0.5} // 增加金属感
+                roughness={0.1} // 增加反光效果
+            />
         </Box>
     );
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
-            <h1 className="text-2xl font-bold mb-4">Parking Lot Management (3D Model)</h1>
+            <h1 className="text-2xl font-bold mb-4">3D Parking Lot Simulation</h1>
 
-            {/* 3D 停车场渲染区域 */}
-            <Canvas style={{height: '500px', width: '100%'}} shadows camera={{position: [10, 10, 10], fov: 50}}>
-                {/* 灯光设置 */}
+            <Canvas style={{height: '500px', width: '100%'}} shadows camera={{position: [15, 15, 15], fov: 60}}>
+                {/* 灯光和阴影 */}
                 <ambientLight intensity={0.4}/>
-                <directionalLight position={[5, 10, 5]} intensity={0.8} castShadow/>
+                <directionalLight position={[10, 20, 10]} intensity={1} castShadow/>
                 <spotLight position={[15, 20, 5]} angle={0.3} penumbra={1} intensity={1} castShadow/>
 
-                {/* 地面 */}
-                <Plane args={[20, 20]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
-                    <meshStandardMaterial color="gray"/>
+                {/* 添加地面 */}
+                <Plane args={[30, 30]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+                    <meshStandardMaterial color="#CCCCCC"/>
+                    {/* 使用浅灰色地面 */}
                 </Plane>
+
+                {/* 使用网格线模拟停车位划线 */}
+                <gridHelper args={[30, 30, '#000000', '#FFFFFF']} position={[0, -0.49, 0]}/>
 
                 {/* 渲染停车位 */}
                 {parkingSpots.map((spot, index) => (
                     <ParkingSpot
                         key={spot.id}
-                        position={[index * 3 - 5, 0, 0]} // 停车位排列
+                        position={[(index % 5) * 3 - 6, 0, Math.floor(index / 5) * 5 - 6]} // 网格布局
                         status={spot.status}
                     />
                 ))}
@@ -78,6 +85,7 @@ const ParkingLots = () => {
                 <OrbitControls/>
             </Canvas>
 
+            {/* 控制面板 */}
             <div className="flex space-x-4 mt-4">
                 <input
                     className="border p-2"
