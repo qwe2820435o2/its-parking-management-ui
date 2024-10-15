@@ -4,7 +4,7 @@ import {Canvas} from "@react-three/fiber";
 
 const ParkingLots = () => {
 
-    const totalParkingSpots = 80; // 总共80个停车位
+    const totalParkingSpots = 68; // 总共80个停车位
     const initialParkingSpots = Array.from({ length: totalParkingSpots }, (_, i) => ({
         id: i + 1,
         status: i % 2 === 0 ? 'free' : 'busy'
