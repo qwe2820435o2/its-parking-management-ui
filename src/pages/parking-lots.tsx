@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Box, OrbitControls, Plane} from "@react-three/drei";
+import { Box, OrbitControls, Plane, Text } from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
 
 const ParkingLots = () => {
 
-    const totalParkingSpots = 68; // 总共80个停车位
+    const totalParkingSpots = 68; // 总共68个停车位
     const initialParkingSpots = Array.from({ length: totalParkingSpots }, (_, i) => ({
         id: i + 1,
         status: i % 2 === 0 ? 'free' : 'busy'
@@ -25,20 +25,33 @@ const ParkingLots = () => {
         );
     };
 
-    // 停车位组件
-    const ParkingSpot = ({ position, status }: { position: [number, number, number]; status: string }) => (
-        <Box
-            args={[2, 1, 4]} // 统一停车位大小
-            position={position} // 停车位的位置
-            castShadow
-            receiveShadow
-        >
-            <meshStandardMaterial
-                color={status === 'free' ? '#7CFC00' : '#FF4500'} // 使用亮绿色和红色表示停车状态
-                metalness={0.5} // 增加金属感
-                roughness={0.1} // 增加反光效果
-            />
-        </Box>
+    // 停车位组件，添加编号
+    const ParkingSpot = ({ position, status, id }: { position: [number, number, number]; status: string, id: number }) => (
+        <>
+            <Box
+                args={[2, 1, 4.5]} // 统一停车位大小
+                position={position} // 停车位的位置
+                castShadow
+                receiveShadow
+            >
+                <meshStandardMaterial
+                    color={status === 'free' ? '#7CFC00' : '#FF4500'} // 使用亮绿色和红色表示停车状态
+                    metalness={0.2} // 增加金属感
+                    roughness={0.1} // 增加反光效果
+                />
+            </Box>
+            {/* 显示编号 */}
+            <Text
+                position={[position[0], position[1] + 1.5, position[2]]} // 编号位置，高度增加
+                fontSize={1.3} // 增大字体
+                fontWeight="bold" // 加粗字体
+                color="#000000" // 文字颜色
+                anchorX="center"
+                anchorY="middle"
+            >
+                {id}
+            </Text>
+        </>
     );
 
     // 计算回字型布局的停车位位置，确保每边都有间隔
@@ -92,6 +105,7 @@ const ParkingLots = () => {
                         key={spot.id}
                         position={parkingPositions[index]} // 回字型布局位置
                         status={spot.status}
+                        id={spot.id} // 添加车位编号
                     />
                 ))}
 
