@@ -48,22 +48,22 @@ const ParkingLots = () => {
 
         // 上边停车位 (20个)
         for (let i = 0; i < 20; i++) {
-            positions.push([i * margin - 38, 0, -30]); // 横向排列，固定Z轴
+            positions.push([i * margin - 38, 0, -45]); // 横向排列，固定Z轴
         }
 
         // 右边停车位 (20个)
-        for (let i = 0; i < 20; i++) {
-            positions.push([30, 0, i * margin - 38]); // 纵向排列，固定X轴
+        for (let i = 0; i < 14; i++) {
+            positions.push([45, 0, i * 6 - 38]); // 纵向排列，固定X轴
         }
 
         // 下边停车位 (20个)
         for (let i = 0; i < 20; i++) {
-            positions.push([i * margin - 38, 0, 30]); // 横向排列，固定Z轴
+            positions.push([i * margin - 38, 0, 45]); // 横向排列，固定Z轴
         }
 
         // 左边停车位 (20个)
-        for (let i = 0; i < 20; i++) {
-            positions.push([-30, 0, i * margin - 38]); // 纵向排列，固定X轴
+        for (let i = 0; i < 14; i++) {
+            positions.push([-45, 0, i * 6 - 38]); // 纵向排列，固定X轴
         }
 
         return positions;
