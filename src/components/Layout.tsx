@@ -63,10 +63,10 @@ const Layout = ({children}: LayoutProps) => {
                     </nav>
                 </aside>
             )}
-            <main className="flex-1 p-6 bg-secondary text-textPrimary relative">
+            <main className="flex-1 p-6 bg-secondary text-textPrimary">
                 {/* User info in top right corner */}
                 {!isLoginPage && user && (
-                    <div className="absolute top-6 right-6 flex items-center space-x-4">
+                    <div className="flex justify-end items-center space-x-4 mb-4">
                         <img src={user.avatarUrl} alt="User Avatar" className="w-10 h-10 rounded-full"/>
                         <span>{user.name}</span>
                         <Button variant="outline" onClick={handleLogout}>
@@ -74,7 +74,11 @@ const Layout = ({children}: LayoutProps) => {
                         </Button>
                     </div>
                 )}
-                {children}
+
+                {/* The children content will be pushed down */}
+                <div className="mt-2">
+                    {children}
+                </div>
             </main>
         </div>
     );
