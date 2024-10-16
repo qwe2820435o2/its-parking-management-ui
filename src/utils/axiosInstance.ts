@@ -14,7 +14,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (request) => {
         // Example: Add authorization token if present in local storage
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
+        console.error('token:', token);
         if (token) {
             request.headers['Authorization'] = `Bearer ${token}`;
         }

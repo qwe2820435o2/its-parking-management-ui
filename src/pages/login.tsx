@@ -21,6 +21,12 @@ const Login = () => {
             const response = await AuthService.login({ username, password });
             // 登录成功后可以做其他处理
             localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify({
+                name: response.username,    // Assuming the API returns user info
+                role: response.role,   // Example avatar URL
+                avatarUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwzbzantcH6yH8LAz0ykNZR9jWfTpYU-9OTg&s'   // Example avatar URL
+            }));
+
             console.log('response',response)
             setToastMessage('Login successfully!');
             // 登录成功后跳转到首页

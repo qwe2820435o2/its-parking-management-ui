@@ -33,7 +33,7 @@ const Orders = () => {
     const queryOrders = async () => {
         try {
             const data = await OrdersService.queryOrders(currentPage, ordersPerPage);
-            setOrders(data);  // 假设返回的结构中包含 orders 数组
+            setOrders(data.data);  // 假设返回的结构中包含 orders 数组
             setTotalCount(data.totalCount);  // 返回的总订单数
         } catch (error) {
             console.error('Failed to fetch orders:', error);

@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import Link from "next/link";
 import { Button } from '@/components/ui/button';
 import {useRouter} from "next/router";
@@ -14,6 +14,22 @@ const Layout = ({children}: LayoutProps) => {
 
     // 检查当前路由是否为 '/login'
     const isLoginPage = router.pathname === '/login';
+
+    const [user, setUser] = useState<{ name: string, avatarUrl: string } | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userInfo = localStorage.getItem('user');
+        if (token && userInfo) {
+            setUser(JSON.parse(userInfo));
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        router.push('/login');
+    };
 
     return (
         <div className="flex h-screen">
@@ -47,7 +63,19 @@ const Layout = ({children}: LayoutProps) => {
                     </nav>
                 </aside>
             )}
-            <main className="flex-1 p-6 bg-secondary text-textPrimary">{children}</main>
+            <main className="flex-1 p-6 bg-secondary text-textPrimary relative">
+                {/* User info in top right corner */}
+                {!isLoginPage && user && (
+                    <div className="absolute top-6 right-6 flex items-center space-x-4">
+                        <img src={user.avatarUrl} alt="User Avatar" className="w-10 h-10 rounded-full"/>
+                        <span>{user.name}</span>
+                        <Button variant="outline" onClick={handleLogout}>
+                            Logout
+                        </Button>
+                    </div>
+                )}
+                {children}
+            </main>
         </div>
     );
 };
